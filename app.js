@@ -62,7 +62,7 @@ var chart = svg.append('g')
 
 function plot(params){
   this.append('g')
-      .call(yGridlines)
+      .call(params.gridlines)
       .classed('gridline', true)
       .attr('transform', 'translate(0,0)')
 
@@ -108,7 +108,7 @@ function plot(params){
   this.append('g')
       .classed('x axis', true)
       .attr('transform', 'translate(' + 0 + ',' + height + ')')
-      .call(xAxis)
+      .call(params.axis.x)
         .selectAll('text')
           .style('text-anchor', 'end')
           .attr('dx', -8)
@@ -118,7 +118,7 @@ function plot(params){
   this.append('g')
       .classed('y axis', true)
       .attr('transform', 'translate(0,0)')
-      .call(yAxis)
+      .call(params.axis.y)
 
   this.select('.y.axis')
       .append('text')
@@ -138,5 +138,18 @@ function plot(params){
 }
 
 plot.call(chart, {
-  data: data
+  data: data,
+  axis: {
+    x: xAxis,
+    y: yAxis
+  },
+  gridlines: yGridlines
 })
+
+
+
+
+
+
+
+
