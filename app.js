@@ -1,3 +1,8 @@
+
+
+
+
+
 var data = [
   {key: "Glazed",   value: 132},
   {key: "Jelly",    value: 71},
@@ -34,6 +39,10 @@ var y = d3.scale.ordinal()
             return entry.key
           }))
           .rangeBands([0, height])
+var linearColorScale = d3.scale.linear()
+                        .domain([0, data.length])
+                        .range(['#572500', '#F68026']);
+var ordinalColorScale = d3.scale.category20();
 var svg = d3.select('body').append('svg')
             .attr('id', 'chart')
             .attr('width',w)
@@ -52,14 +61,18 @@ function plot(params){
       .append('rect')
       .classed('bar', true)
       .attr('x', 0)
-      .attr('y', function(data, index){
-        return y(data.key);
+      .attr('y', function(d, i){
+        return y(d.key);
       })
-      .attr('width', function(data, index){
-          return x(data.value)
+      .attr('width', function(d, i){
+          return x(d.value)
       })
-      .attr('height', function(data, index){
+      .attr('height', function(d, i){
         return y.rangeBand()-1;
+      })
+      .style('fill', function(d, i){
+        return ordinalColorScale(i)
+        // return linearColorScale(i);
       })
 
   this.selectAll('.bar-label')
