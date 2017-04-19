@@ -24,14 +24,16 @@ var margin = {
 var width = w - margin.left - margin.left;
 var height = h - margin.top - margin.bottom;
 
-var xScale = d3.scale.linear()
+var x = d3.scale.linear()
           .domain([0, d3.max(data, function(d){
             return d.value;
           })])
           .range([0, width]);
-var yScale = d3.scale.linear()
-          .domain([0, data.length])
-          .range([0, height])
+var y = d3.scale.ordinal()
+          .domain(data.map(function(entry){
+            return entry.key
+          }))
+          .rangeBands([0, height])
 var svg = d3.select('body').append('svg')
             .attr('id', 'chart')
             .attr('width',w)
@@ -51,13 +53,13 @@ function plot(params){
       .classed('bar', true)
       .attr('x', 0)
       .attr('y', function(data, index){
-        return yScale(index);
+        return y(data.key);
       })
       .attr('width', function(data, index){
-          return xScale(data.value)
+          return x(data.value)
       })
       .attr('height', function(data, index){
-        return yScale(1)-1;
+        return y.rangeBand()-1;
       })
 
   this.selectAll('.bar-label')
@@ -66,14 +68,14 @@ function plot(params){
       .append('text')
       .classed('bar-label', true)
       .attr('x', function(d, i){
-        return xScale(d.value);
+        return x(d.value);
       })
       .attr('dx', -4)
       .attr('y', function(data, index){
-        return yScale(index);
+        return y(data.key);
       })
       .attr('dy', function(d, i){
-        return yScale(1)/1.5+2
+        return y.rangeBand()/1.5+2
       })
       .text(function(d, i){
         return d.value
