@@ -46,6 +46,11 @@ var xAxis = d3.svg.axis()
 var yAxis = d3.svg.axis()
               .scale(y)
               .orient('left')
+var yGridlines = d3.svg.axis()
+                  .scale(y)
+                  .tickSize(-width,0,0)
+                  .tickFormat('')
+                  .orient('left')
 var svg = d3.select('body').append('svg')
             .attr('id', 'chart')
             .attr('width',w)
@@ -56,6 +61,11 @@ var chart = svg.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
 function plot(params){
+
+  this.append('g')
+      .call(yGridlines)
+      .classed('gridline', true)
+      .attr('transform', 'translate(0,0)')
 
   this.selectAll('.bar')
     .data(params.data)
