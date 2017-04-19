@@ -20,8 +20,8 @@ var w = 800;
 var h = 450;
 var margin = {
   top: 58,
-  bottom: 72,
-  left: 50,
+  bottom: 100,
+  left: 80,
   right: 10
 }
 var width = w - margin.left - margin.right;
@@ -61,7 +61,6 @@ var chart = svg.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
 function plot(params){
-
   this.append('g')
       .call(yGridlines)
       .classed('gridline', true)
@@ -120,6 +119,22 @@ function plot(params){
       .classed('y axis', true)
       .attr('transform', 'translate(0,0)')
       .call(yAxis)
+
+  this.select('.y.axis')
+      .append('text')
+      .attr('x', 0)
+      .attr('y', 0)
+      .style('text-anchor', 'middle')
+      .attr('transform','translate (-50,' + height/2 + ') rotate(-90)')
+      .text('Units sold');
+
+  this.select('.x.axis')
+      .append('text')
+      .attr('x', 0)
+      .attr('y', 0)
+      .style('text-anchor', 'middle')
+      .attr('transform', 'translate(' + width/2 + ',80)' )
+      .text('Donut Type')
 }
 
 plot.call(chart, {
