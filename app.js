@@ -1,8 +1,6 @@
 
 
 
-
-
 var data = [
   {key: "Glazed",   value: 132},
   {key: "Jelly",    value: 71},
@@ -21,24 +19,23 @@ var data = [
 var w = 800;
 var h = 450;
 var margin = {
-  top:20,
+  top:40,
   bottom:40,
-  left:80,
-  right:20
+  left:50,
+  right:10
 }
-var width = w - margin.left - margin.left;
+var width = w - margin.left - margin.right;
 var height = h - margin.top - margin.bottom;
-
-var x = d3.scale.linear()
-          .domain([0, d3.max(data, function(d){
-            return d.value;
-          })])
-          .range([0, width]);
-var y = d3.scale.ordinal()
+var x = d3.scale.ordinal()
           .domain(data.map(function(entry){
             return entry.key
           }))
-          .rangeBands([0, height])
+          .rangeBands([0, width])
+var y = d3.scale.linear()
+          .domain([0, d3.max(data, function(d){
+            return d.value;
+          })])
+          .range([height, 0]);
 var linearColorScale = d3.scale.linear()
                         .domain([0, data.length])
                         .range(['#572500', '#F68026']);
@@ -58,7 +55,6 @@ var chart = svg.append('g')
             .classed('display', true)
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
-
 function plot(params){
 
   this.selectAll('.bar')
@@ -66,18 +62,20 @@ function plot(params){
     .enter()
       .append('rect')
       .classed('bar', true)
-      .attr('x', 0)
+      .attr('x', function(d, i){
+        return x(d.key)
+      })
       .attr('y', function(d, i){
-        return y(d.key);
+        return y(d.value);
       })
       .attr('width', function(d, i){
-          return x(d.value)
+        return x.rangeBand();
       })
       .attr('height', function(d, i){
-        return y.rangeBand()-1;
+        return height - y(d.value);
       })
       .style('fill', function(d, i){
-        return ordinalColorScale(i)
+        return ordinalColorScale(i);
         // return linearColorScale(i);
       })
 
@@ -87,17 +85,15 @@ function plot(params){
       .append('text')
       .classed('bar-label', true)
       .attr('x', function(d, i){
-        return x(d.value);
+        return x(d.key) + (x.rangeBand()/2)
       })
-      .attr('dx', -4)
+      .attr('dx', 0)
       .attr('y', function(data, index){
-        return y(data.key);
+        return y(data.value);
       })
-      .attr('dy', function(d, i){
-        return y.rangeBand()/1.5+2
-      })
+      .attr('dy', -6)
       .text(function(d, i){
-        return d.value
+        return d.value;
       });
 
   this.append('g')

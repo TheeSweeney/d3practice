@@ -16,9 +16,9 @@ body,html{
 }
 
 .bar-label {
-  fill: white;
+  fill: #000;
   font-size: 24px;
-  text-anchor: end;
+  text-anchor: middle;
 }
 
 .axis path, .axis line {
