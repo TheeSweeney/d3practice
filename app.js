@@ -22,8 +22,8 @@ var w = 800;
 var h = 450;
 var margin = {
   top:20,
-  bottom:20,
-  left:20,
+  bottom:40,
+  left:80,
   right:20
 }
 var width = w - margin.left - margin.left;
@@ -104,6 +104,11 @@ function plot(params){
       .classed('x axis', true)
       .attr('transform', 'translate(' + 0 + ',' + height + ')')
       .call(xAxis)
+
+  this.append('g')
+      .classed('y axis', true)
+      .attr('transform', 'translate(0,0)')
+      .call(yAxis)
 }
 
 plot.call(chart, {
