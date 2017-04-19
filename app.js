@@ -12,37 +12,44 @@ var svg = d3.select('body').append('svg')
             .attr('width',w)
             .attr('height',h)
 
-svg.selectAll('.bar')
-  .data(data)
-  .enter()
-    .append('rect')
-    .classed('bar', true)
-    .attr('x', 0)
-    .attr('y', function(data, index){
-      return yScale(index);
-    })
-    .attr('width', function(data, index){
-        return xScale(data)
-    })
-    .attr('height', function(data, index){
-      return yScale(1)-1;
-    })
+function plot(params){
 
-svg.selectAll('.bar-label')
-  .data(data)
-  .enter()
-    .append('text')
-    .classed('bar-label', true)
-    .attr('x', function(d, i){
-      return xScale(d);
-    })
-    .attr('dx', -4)
-    .attr('y', function(data, index){
-      return yScale(index);
-    })
-    .attr('dy', function(d, i){
-      return yScale(1)/1.5+2
-    })
-    .text(function(d, i){
-      return d
-    });
+  this.selectAll('.bar')
+    .data(params.data)
+    .enter()
+      .append('rect')
+      .classed('bar', true)
+      .attr('x', 0)
+      .attr('y', function(data, index){
+        return yScale(index);
+      })
+      .attr('width', function(data, index){
+          return xScale(data)
+      })
+      .attr('height', function(data, index){
+        return yScale(1)-1;
+      })
+
+  this.selectAll('.bar-label')
+    .data(params.data)
+    .enter()
+      .append('text')
+      .classed('bar-label', true)
+      .attr('x', function(d, i){
+        return xScale(d);
+      })
+      .attr('dx', -4)
+      .attr('y', function(data, index){
+        return yScale(index);
+      })
+      .attr('dy', function(d, i){
+        return yScale(1)/1.5+2
+      })
+      .text(function(d, i){
+        return d
+      });
+}
+
+plot.call(svg,{
+  data: data
+})
