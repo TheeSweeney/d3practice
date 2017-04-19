@@ -25,7 +25,9 @@ var width = w - margin.left - margin.left;
 var height = h - margin.top - margin.bottom;
 
 var xScale = d3.scale.linear()
-          .domain([0, d3.max(data)])
+          .domain([0, d3.max(data, function(d){
+            return d.value;
+          })])
           .range([0, width]);
 var yScale = d3.scale.linear()
           .domain([0, data.length])
@@ -52,7 +54,7 @@ function plot(params){
         return yScale(index);
       })
       .attr('width', function(data, index){
-          return xScale(data)
+          return xScale(data.value)
       })
       .attr('height', function(data, index){
         return yScale(1)-1;
@@ -64,7 +66,7 @@ function plot(params){
       .append('text')
       .classed('bar-label', true)
       .attr('x', function(d, i){
-        return xScale(d);
+        return xScale(d.value);
       })
       .attr('dx', -4)
       .attr('y', function(data, index){
@@ -74,7 +76,7 @@ function plot(params){
         return yScale(1)/1.5+2
       })
       .text(function(d, i){
-        return d
+        return d.value
       });
 }
 
