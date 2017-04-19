@@ -19,10 +19,10 @@ var data = [
 var w = 800;
 var h = 450;
 var margin = {
-  top:40,
-  bottom:40,
-  left:50,
-  right:10
+  top: 58,
+  bottom: 72,
+  left: 50,
+  right: 10
 }
 var width = w - margin.left - margin.right;
 var height = h - margin.top - margin.bottom;
@@ -110,6 +110,11 @@ function plot(params){
       .classed('x axis', true)
       .attr('transform', 'translate(' + 0 + ',' + height + ')')
       .call(xAxis)
+        .selectAll('text')
+          .style('text-anchor', 'end')
+          .attr('dx', -8)
+          .attr('dy', 8)
+          .attr('transform','translate(0,0) rotate(-45)')
 
   this.append('g')
       .classed('y axis', true)
