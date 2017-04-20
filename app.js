@@ -148,10 +148,18 @@ function plot(params){
       .append('rect')
       .classed('bar', true)
       .on('mouseover', function(d,i){
-        d3.select(this).style('fill-opacity', '.8')
+        var that = this;
+        d3.selectAll('.bar')
+          .transition()
+          .style('fill-opacity', function(){
+            return (this === that) ? '1' : '.5'
+          })
       })
       .on('mouseout', function(d,i){
-        d3.select(this).style('fill-opacity', '1')
+        var that = this;
+        d3.selectAll('.bar')
+          .transition()
+          .style('fill-opacity', '1')
       });
 
   this.selectAll('.bar-label')
