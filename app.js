@@ -65,6 +65,60 @@ var sort_btn = controls.append('button')
                       .html('Sort data: ascending')
                       .attr('state', 0)
 
+function drawAxis(params){
+  if(params.initialize){
+    //draw axes
+    //draw gridlines
+    this.append('g')
+        .call(params.gridlines)
+        .classed('gridline', true)
+        .attr('transform', 'translate(0,0)')
+    //x axis
+    this.append('g')
+        .classed('x axis', true)
+        .attr('transform', 'translate(' + 0 + ',' + height + ')')
+        .call(params.axis.x)
+          .selectAll('text')
+            .classed('x-axis-label',true)
+            .style('text-anchor', 'end')
+            .attr('dx', -8)
+            .attr('dy', 8)
+            .attr('transform','translate(0,0) rotate(-45)')
+    //y axis
+    this.append('g')
+        .classed('y axis', true)
+        .attr('transform', 'translate(0,0)')
+        .call(params.axis.y)
+    //y label
+    this.select('.y.axis')
+        .append('text')
+        .attr('x', 0)
+        .attr('y', 0)
+        .style('text-anchor', 'middle')
+        .attr('transform','translate (-50,' + height/2 + ') rotate(-90)')
+        .text('Units sold');
+    //y label
+    this.select('.x.axis')
+        .append('text')
+        .attr('x', 0)
+        .attr('y', 0)
+        .style('text-anchor', 'middle')
+        .attr('transform', 'translate(' + width/2 + ',80)' )
+        .text('Donut Type')
+  }else if(!params.initialize){
+    //update info
+    this.selectAll('g.x.axis')
+        .call(params.axis.x);
+    this.selectAll('.x-axis-label')
+        .style('text-anchor', 'end')
+        .attr('dx', -8)
+        .attr('dy', 8)
+        .attr('transform','translate(0,0) rotate(-45)')
+    this.selectAll('g.y.axis')
+        .call(params.axis.y);
+  }
+}
+
 function plot(params){
   x.domain(data.map(function(entry){
       return entry.key
@@ -74,10 +128,9 @@ function plot(params){
       return d.value;
     })])
 
-  this.append('g')
-    .call(params.gridlines)
-    .classed('gridline', true)
-    .attr('transform', 'translate(0,0)')
+  //draw axes and axes labels
+  drawAxis.call(this, params)
+
 
   //enter()
 
@@ -137,39 +190,6 @@ function plot(params){
     .data(params.data)
     .exit()
     .remove();
-  
-  
-
-  this.append('g')
-      .classed('x axis', true)
-      .attr('transform', 'translate(' + 0 + ',' + height + ')')
-      .call(params.axis.x)
-        .selectAll('text')
-          .style('text-anchor', 'end')
-          .attr('dx', -8)
-          .attr('dy', 8)
-          .attr('transform','translate(0,0) rotate(-45)')
-
-  this.append('g')
-      .classed('y axis', true)
-      .attr('transform', 'translate(0,0)')
-      .call(params.axis.y)
-
-  this.select('.y.axis')
-      .append('text')
-      .attr('x', 0)
-      .attr('y', 0)
-      .style('text-anchor', 'middle')
-      .attr('transform','translate (-50,' + height/2 + ') rotate(-90)')
-      .text('Units sold');
-
-  this.select('.x.axis')
-      .append('text')
-      .attr('x', 0)
-      .attr('y', 0)
-      .style('text-anchor', 'middle')
-      .attr('transform', 'translate(' + width/2 + ',80)' )
-      .text('Donut Type')
 }
 
 sort_btn.on('click', function(event){
@@ -200,7 +220,8 @@ sort_btn.on('click', function(event){
       x: xAxis,
       y: yAxis
     },
-    gridlines: yGridlines
+    gridlines: yGridlines,
+    initialize: false
   })
 });
 
@@ -210,7 +231,8 @@ plot.call(chart, {
     x: xAxis,
     y: yAxis
   },
-  gridlines: yGridlines
+  gridlines: yGridlines,
+  initialize: true
 })
 
 
