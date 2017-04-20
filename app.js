@@ -108,6 +108,10 @@ function drawAxis(params){
   }else if(!params.initialize){
     //update info
     this.selectAll('g.x.axis')
+        .transition()
+        .duration(500)
+        .ease('bounce')
+        .delay(500)
         .call(params.axis.x);
     this.selectAll('.x-axis-label')
         .style('text-anchor', 'end')
@@ -115,6 +119,10 @@ function drawAxis(params){
         .attr('dy', 8)
         .attr('transform','translate(0,0) rotate(-45)')
     this.selectAll('g.y.axis')
+        .transition()
+        .duration(500)
+        .ease('bounce')
+        .delay(500)
         .call(params.axis.y);
   }
 }
@@ -149,6 +157,10 @@ function plot(params){
   //update
 
   this.selectAll('.bar')
+    .transition()
+    .duration(500)
+    .ease('bounce')
+    .delay(500)
     .attr('x', function(d, i){
       return x(d.key)
     })
@@ -167,6 +179,10 @@ function plot(params){
     })
 
   this.selectAll('.bar-label')
+    .transition()
+    .duration(500)
+    .ease('bounce')
+    .delay(500)
     .attr('x', function(d, i){
       return x(d.key) + (x.rangeBand()/2)
     })
