@@ -146,7 +146,13 @@ function plot(params){
     .data(params.data)
     .enter()
       .append('rect')
-      .classed('bar', true);
+      .classed('bar', true)
+      .on('mouseover', function(d,i){
+        d3.select(this).style('fill-opacity', '.8')
+      })
+      .on('mouseout', function(d,i){
+        d3.select(this).style('fill-opacity', '1')
+      });
 
   this.selectAll('.bar-label')
     .data(params.data)
